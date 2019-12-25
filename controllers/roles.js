@@ -1,9 +1,16 @@
 const Roles = require('../model/roles')
+const Department = require('../model/department')
 const Op = require('sequelize').Op
 const roleAll = async (ctx) => {
-  const data = await Roles.findAll()
+  let data = await Roles.findAll({
+    include: [{
+      model: Department, 
+      attributes: ['name', 'desc', 'id'],
+    }],
+    // 'include': [Department],
+  })
   ctx.body = {
-    code: 1000,
+    code: 200,
     data
   }
 }

@@ -1,16 +1,16 @@
 const sequelize = require('../sequelize')
 const Sequelize = require('sequelize')
 const moment = require('moment') // 日期处理库
-const Department = require('./department')
-// 定义表结构 -- 角色
+const roles = require('./roles')
+// 定义表结构 -- 部门
 
-const roles = sequelize.define('roles', {
+const department = sequelize.define('department', {
   id: {
     type: Sequelize.INTEGER(11), // 设置字段类型
     primaryKey: true, // 设置为主建
-		autoIncrement: true, // 自增
-	},
-	parentName: {
+    autoIncrement: true, // 自增
+  },
+  parentName: {
     type: Sequelize.STRING,
     unique: { // 唯一
       msg: '已添加'
@@ -23,7 +23,7 @@ const roles = sequelize.define('roles', {
     }
   },
   desc: {
-		type: Sequelize.STRING,
+    type: Sequelize.STRING,
   },
   createdAt: {
     type: Sequelize.DATE,
@@ -43,7 +43,8 @@ const roles = sequelize.define('roles', {
 },
 {
   // sequelize会自动使用传入的模型名（define的第一个参数）的复数做为表名 设置true取消默认设置
-	freezeTableName: true,
+  freezeTableName: true,
 })
-roles.belongsTo(Department);
-module.exports = roles
+// department.hasMany(roles);
+module.exports = department
+

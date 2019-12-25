@@ -15,6 +15,8 @@ const users = require('./routes/users')
 const tag = require('./routes/tag')
 const roles = require('./routes/roles')
 const roleUser = require('./model/roleUser')
+const department = require('./routes/department')
+const modelIndex = require('./model/index')
 
 // error handler
 onerror(app)
@@ -79,6 +81,7 @@ app.use(index.routes(), index.allowedMethods())
 app.use(users.routes(), users.allowedMethods())
 app.use(tag.routes(), tag.allowedMethods())
 app.use(roles.routes(), roles.allowedMethods())
+app.use(department.routes(), department.allowedMethods())
 
 // error-handling
 app.on('error', (err, ctx) => {
