@@ -10,11 +10,8 @@ const department = sequelize.define('department', {
     primaryKey: true, // 设置为主建
     autoIncrement: true, // 自增
   },
-  parentName: {
-    type: Sequelize.STRING,
-    unique: { // 唯一
-      msg: '已添加'
-    }
+  parentId: { // 上一个部门的id
+    type: Sequelize.INTEGER(11),
   },
   name: {
     type: Sequelize.STRING,

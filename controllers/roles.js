@@ -38,6 +38,17 @@ const create = async (ctx) => {
     }
   }
 }
+const update = async (ctx) => {
+  const params = ctx.request.body;
+  const where = {
+    id: params.id
+  }
+  await Roles.update(params, { where });
+  ctx.body = {
+    code: 200,
+    message: '更新成功'
+  }
+};
 const destroy = async ctx => {
   await Roles.destroy({where: ctx.request.body})
   ctx.body = {
@@ -48,5 +59,6 @@ const destroy = async ctx => {
 module.exports = {
   create,
   roleAll,
+  update,
   destroy
 }

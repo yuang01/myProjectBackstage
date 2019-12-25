@@ -5,5 +5,8 @@ router.prefix('/department')
 
 router.get('/', function (ctx, next) {
   ctx.body = 'this is a Department response!'
-})
+});
+
+router.get('/all', Department.all);
+router.post('/update', Department.update)
 module.exports = router
