@@ -27,7 +27,7 @@ const all = async (ctx) => {
     distinct: true,
     include: [{
       model: Roles, 
-      attributes: ['name'],
+      attributes: ['name', 'desc'],
       through: { attributes: [] }, // 排除中间表  
     }],
     where: where

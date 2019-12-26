@@ -10,13 +10,14 @@ const jwt = require('jsonwebtoken'); // 用于签发、解析`token`
 const jwtKoa = require('koa-jwt');      // 用于路由权限控制
 const cors = require('koa2-cors')
 
+const modelIndex = require('./model/index')
 const index = require('./routes/index')
 const users = require('./routes/users')
 const tag = require('./routes/tag')
 const roles = require('./routes/roles')
 const roleUser = require('./model/roleUser')
 const department = require('./routes/department')
-const modelIndex = require('./model/index')
+const menus = require('./routes/menus')
 
 // error handler
 onerror(app)
@@ -82,6 +83,7 @@ app.use(users.routes(), users.allowedMethods())
 app.use(tag.routes(), tag.allowedMethods())
 app.use(roles.routes(), roles.allowedMethods())
 app.use(department.routes(), department.allowedMethods())
+app.use(menus.routes(), menus.allowedMethods())
 
 // error-handling
 app.on('error', (err, ctx) => {

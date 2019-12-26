@@ -8,5 +8,7 @@ router.get('/', function (ctx, next) {
 })
 
 router.get('/all', Roles.roleAll)
+router.get('/destroy', Roles.destroy)
 router.post('/update', Roles.update)
+router.post('/create', Roles.create)
 module.exports = router

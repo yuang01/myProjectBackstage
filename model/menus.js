@@ -1,29 +1,34 @@
 const sequelize = require('../sequelize')
 const Sequelize = require('sequelize')
 const moment = require('moment') // 日期处理库
-const Department = require('./department')
-// 定义表结构 -- 角色
+// 定义表结构 -- 菜单
 
-const roles = sequelize.define('roles', {
+const menus = sequelize.define('menus', {
   id: {
     type: Sequelize.INTEGER(11), // 设置字段类型
     primaryKey: true, // 设置为主建
-		autoIncrement: true, // 自增
-	},
-	parentName: {
-    type: Sequelize.STRING,
-    unique: { // 唯一
-      msg: '已添加'
-    }
+    autoIncrement: true, // 自增
+  },
+  parentId: {
+    type: Sequelize.INTEGER(11),
   },
   name: {
     type: Sequelize.STRING,
-    unique: { // 唯一
-      msg: '已添加'
-    }
+  },
+  path: {
+    type: Sequelize.STRING,
   },
   desc: {
-		type: Sequelize.STRING,
+    type: Sequelize.STRING,
+  },
+  title: {
+    type: Sequelize.STRING,
+  },
+  icon: {
+    type: Sequelize.STRING,
+  },
+  component: {
+    type: Sequelize.STRING,
   },
   createdAt: {
     type: Sequelize.DATE,
@@ -41,9 +46,8 @@ const roles = sequelize.define('roles', {
     }
   }
 },
-{
-  // sequelize会自动使用传入的模型名（define的第一个参数）的复数做为表名 设置true取消默认设置
-	freezeTableName: true,
-})
-// roles.belongsTo(Department);
-module.exports = roles
+  {
+    // sequelize会自动使用传入的模型名（define的第一个参数）的复数做为表名 设置true取消默认设置
+    freezeTableName: true,
+  })
+module.exports = menus
