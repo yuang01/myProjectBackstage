@@ -8,4 +8,5 @@ router.get('/', function (ctx, next) {
 })
 router.get('/getMenus', Menus.getMenus)
 router.get('/getMenusByRoleId', Menus.getMenusByRoleId)
+router.get('/getMenusByRoleName', Menus.getMenusByRoleName)
 module.exports = router
