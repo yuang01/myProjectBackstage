@@ -51,7 +51,20 @@ const update = async (ctx) => {
   }
 };
 
+// 删除
+const destroy = async ctx => {
+  const where = {
+    id: ctx.request.query.id
+  };
+  await Department.destroy({where})
+  ctx.body = {
+    code: 200,
+    message: '删除成功'
+  }
+};
+
 module.exports = {
   all,
-  update
+  update,
+  destroy
 }

@@ -8,5 +8,6 @@ router.get('/', function (ctx, next) {
 });
 
 router.get('/all', Department.all);
-router.post('/update', Department.update)
+router.post('/update', Department.update);
+router.get('/destroy', Department.destroy);
 module.exports = router
