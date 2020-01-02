@@ -16,6 +16,7 @@ const roleAll = async (ctx) => {
 }
 const create = async (ctx) => {
   const params = ctx.request.body
+  const checkMenus = params.checkMenus;
   if (!params.name) {
     ctx.body = {
       code: 100,
@@ -29,19 +30,19 @@ const create = async (ctx) => {
     }
     return false
   }
-  try {
-    await Roles.create(params)
-    ctx.body = {
-      code: 200,
-      message: '创建成功'
+  let role = await Roles.create(params)
+  let menus = await Menus.findAll({
+    where: {
+      id: {
+        [Op.or]: checkMenus
+      }
     }
-  }
-  catch(err) {
-    const msg = err.errors[0]
-    ctx.body = {
-      code: 300,
-      message: msg.value + msg.message
-    }
+  })
+  // 更新该角色所对应的菜单
+  role.setMenus(menus);
+  ctx.body = {
+    code: 200,
+    message: '创建成功'
   }
 }
 const update = async (ctx) => {
