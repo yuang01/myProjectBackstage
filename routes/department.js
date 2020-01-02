@@ -10,4 +10,5 @@ router.get('/', function (ctx, next) {
 router.get('/all', Department.all);
 router.post('/update', Department.update);
 router.get('/destroy', Department.destroy);
+router.post('/create', Department.create);
 module.exports = router

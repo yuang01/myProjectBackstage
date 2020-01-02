@@ -11,7 +11,7 @@ const all = async (ctx) => {
     this.desc = desc;
     this.createdAt = createdAt;
     this.name = name;
-    this.children = children;
+    children.length > 0 && (this.children = children);
   }
 
   function getDFSTree(data, parentId) {
@@ -62,9 +62,28 @@ const destroy = async ctx => {
     message: '删除成功'
   }
 };
-
+// 创建部门
+const create = async (ctx) => {
+  const data = ctx.request.body
+  try {
+    // 新创建的用户默认权限都是 other
+    let newUser = await Department.create(data);
+    ctx.body = {
+      code: 200,
+      message: '部门创建成功',
+    }
+  }
+  catch(err) {
+    const msg = err.errors[0]
+    ctx.body = {
+      code: 300,
+      message: msg.value + msg.message
+    }
+  }
+}
 module.exports = {
   all,
   update,
-  destroy
+  destroy,
+  create
 }
