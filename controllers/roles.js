@@ -48,15 +48,11 @@ const create = async (ctx) => {
 const update = async (ctx) => {
   const body = ctx.request.body;
   const checkMenus = body.checkMenus;
-  const params = {
-    name: body.name,
-    desc: body.desc
-  }
 
   const where = {
     id: body.id
   }
-  await Roles.update(params, { where });
+  await Roles.update(body, { where });
 
   let role = await Roles.findOne({
     where
