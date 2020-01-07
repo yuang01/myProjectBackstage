@@ -27,7 +27,7 @@ const all = async (ctx) => {
     distinct: true,
     include: [{
       model: Roles, 
-      attributes: ['name', 'desc'],
+      attributes: ['name', 'desc', 'id'],
       through: { attributes: [] }, // 排除中间表  
     }],
     where: where
@@ -110,7 +110,8 @@ const create = async (ctx) => {
   try {
     // 新创建的用户默认权限都是 other
     let newUser = await Users.create(data);
-    let roles = await Roles.findAll({ where: { name: 'other' } });
+    const roleId = params.roleId ? params.roleId : 3;
+    let roles = await Roles.findAll({ where: { id: roleId } });
     await newUser.setRoles(roles);
     ctx.body = {
       code: 200,
@@ -131,6 +132,10 @@ const update = async ctx => {
     id: ctx.request.body.id
   };
   await Users.update(ctx.request.body, {where});
+  let user = await Users.findOne({ where });
+  const roleId = ctx.request.body.roleId ? ctx.request.body.roleId : 3;
+  let roles = await Roles.findAll({ where: { id: roleId } });
+  await user.setRoles(roles);
   ctx.body = {
     code: 200,
     message: '更新成功'
