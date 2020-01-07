@@ -133,7 +133,7 @@ const update = async ctx => {
   };
   await Users.update(ctx.request.body, {where});
   let user = await Users.findOne({ where });
-  const roleId = ctx.request.body.roleId ? ctx.request.body.roleId : 3;
+  const roleId = ctx.request.body.roleId ? ctx.request.body.roleId : 3; // 默认3， 表示游客
   let roles = await Roles.findAll({ where: { id: roleId } });
   await user.setRoles(roles);
   ctx.body = {
