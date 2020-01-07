@@ -61,9 +61,29 @@ const getMenusByRoleId = async (ctx) => {
   })
   
   let checkMenus = [];
-  data.menus.forEach(el => {
-    checkMenus.push(el.id);
-  })
+  for (let i = 0; i < data.menus.length; i++) {
+    // 找到该菜单儿子的总数
+    let menus = await Menus.findAll({
+      where: {
+        parentId: data.menus[i].id
+      }
+    });
+    // 假如说一个菜单有5个子菜单，他底下选中的子菜单要等于5个，他才能被选中，返回给前端
+    let oldChildLength = menus.length;
+    let newChildLength = filterCurMenusChildLength(data.menus[i].id);
+    if (oldChildLength <= newChildLength) {
+      checkMenus.push(data.menus[i].id);
+    }
+  }
+  function filterCurMenusChildLength(id) { // 得到一个菜单被选中的子菜单
+    let arr = [];
+    data.menus.forEach(el => {
+      if (el.parentId === id) {
+        arr.push(el);
+      }
+    });
+    return arr.length;
+  }
 
   ctx.body = {
     code: 200,
