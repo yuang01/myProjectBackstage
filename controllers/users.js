@@ -133,9 +133,15 @@ const update = async ctx => {
   };
   await Users.update(ctx.request.body, {where});
   let user = await Users.findOne({ where });
-  const roleId = ctx.request.body.roleId ? ctx.request.body.roleId : 3; // 默认3， 表示游客
-  let roles = await Roles.findAll({ where: { id: roleId } });
-  await user.setRoles(roles);
+  const roles = ctx.request.body.roles || [3];
+  let curRoles = await Roles.findAll({
+    where: { 
+      id: {
+        [Op.or]: roles
+      } 
+    } 
+  });
+  await user.setRoles(curRoles);
   ctx.body = {
     code: 200,
     message: '更新成功'

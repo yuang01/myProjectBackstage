@@ -75,7 +75,8 @@ const getMenusByRoleId = async (ctx) => {
       checkMenus.push(data.menus[i].id);
     }
   }
-  function filterCurMenusChildLength(id) { // 得到一个菜单被选中的子菜单
+  function filterCurMenusChildLength(id) {
+     // 得到一个菜单被选中的子菜单
     let arr = [];
     data.menus.forEach(el => {
       if (el.parentId === id) {
@@ -92,13 +93,18 @@ const getMenusByRoleId = async (ctx) => {
 }
 
 const getMenusByRoleName = async (ctx) => {
-  const roleName = ctx.request.query.name;
+  let roleName = ctx.request.query.name;
+  roleName = eval("("+roleName+")");
   const data = await Roles.findOne({ 
     include: [{
       model: Menus, 
       through: { attributes: [] }, // 排除中间表  
     }],
-    where: { name: roleName } 
+    where: { 
+      name: {
+        [Op.or]: roleName
+      } 
+    } 
   })
   
   let menus = [...data.menus];
