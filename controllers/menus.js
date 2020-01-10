@@ -83,7 +83,7 @@ const getMenusByRoleId = async (ctx) => {
       });
       if (parentMenu) {
         const deleteIndex = checkMenus.indexOf(parentMenu.id);
-        checkMenus.splice(deleteIndex, 1);
+        deleteIndex !== -1 && (checkMenus.splice(deleteIndex, 1));
       }
     }
   }
@@ -107,33 +107,47 @@ const getMenusByRoleId = async (ctx) => {
 const getMenusByRoleName = async (ctx) => {
   let roleName = ctx.request.query.name;
   roleName = eval("("+roleName+")");
-  const data = await Roles.findOne({ 
+  const data = await Roles.findAll({ 
     include: [{
-      model: Menus, 
+      model: Menus,
+      where: {
+        isMenu: 1
+      },
       through: { attributes: [] }, // 排除中间表  
     }],
     where: { 
       name: {
         [Op.or]: roleName
-      } 
-    } 
-  })
-  
-  let menus = [];
-  for (let i = 0; i < data.menus.length; i++) {
-    if (data.menus[i].isMenu === 1) { // 如果是菜单
-      menus.push(data.menus[i]);
-      const hasParentMenu = menus.find(elchild => {
-        return elchild.id === data.menus[i].parentId;
-      });
-      if (!hasParentMenu && (data.menus[i].parentId !== 0)) {
-        let menu = await Menus.findOne({
-          where: {
-            id: data.menus[i].parentId
-          },
-        })
-        menus.push(menu); // 将没有的父级菜单添加进来
       }
+    }
+  });
+
+  let menusArr = [];
+  data.forEach(el => {
+    menusArr = menusArr.concat(el.menus);
+  })
+  // 数组对象去重
+  let obj = {};
+  menusArr = menusArr.reduce((item, next) => {
+    if (!obj[next.id]) {
+      item.push(next);
+      obj[next.id] = true;
+    }
+    return item;
+  }, []);
+
+  let menus = [...menusArr];
+  for (let i = 0; i < menusArr.length; i++) {
+    const hasParentMenu = menusArr.find(elchild => {
+      return elchild.id === menusArr[i].parentId;
+    });
+    if (!hasParentMenu && (menusArr[i].parentId !== 0)) {
+      let menu = await Menus.findOne({
+        where: {
+          id: menusArr[i].parentId
+        },
+      })
+      menus.push(menu); // 将没有的父级菜单添加进来
     }
   }
   const menuTree = getDFSTree(menus, 0);
