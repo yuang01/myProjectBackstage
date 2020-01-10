@@ -2,7 +2,7 @@ const Menus = require('../model/menus')
 const Roles = require('../model/roles')
 const Op = require('sequelize').Op
 
-function treeNode(id, parentId, desc, createdAt, name, path, title, icon, component, children) {
+function treeNode(id, parentId, desc, createdAt, name, path, title, icon, component, isMenu, children) {
   this.id = id;
   this.parentId = parentId;
   this.desc = desc;
@@ -15,6 +15,7 @@ function treeNode(id, parentId, desc, createdAt, name, path, title, icon, compon
     icon,
   };
   this.component = component;
+  this.isMenu = isMenu;
   this.children = children;
 }
 
@@ -32,6 +33,7 @@ function getDFSTree(menus, parentId) {
         el.title,
         el.icon,
         el.component,
+        el.isMenu,
         getDFSTree(menus, el.id)
       )
       treelist.push(tree);
