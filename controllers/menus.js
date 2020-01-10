@@ -73,6 +73,16 @@ const getMenusByRoleId = async (ctx) => {
     let newChildLength = filterCurMenusChildLength(data.menus[i].id);
     if (oldChildLength <= newChildLength) {
       checkMenus.push(data.menus[i].id);
+    } else {
+      let parentMenu = await Menus.findOne({
+        where: {
+          id: data.menus[i].parentId
+        }
+      });
+      if (parentMenu) {
+        const deleteIndex = checkMenus.indexOf(parentMenu.id);
+        checkMenus.splice(deleteIndex, 1);
+      }
     }
   }
   function filterCurMenusChildLength(id) {
@@ -107,18 +117,21 @@ const getMenusByRoleName = async (ctx) => {
     } 
   })
   
-  let menus = [...data.menus];
-  for (let i = 0; i < data.menus.length; i++) { // 不知道什么原因，koa中的foreach不能使用async
-    const hasParentMenu = menus.find(elchild => {
-      return elchild.id === data.menus[i].parentId;
-    });
-    if (!hasParentMenu && (data.menus[i].parentId !== 0)) {
-      let menu = await Menus.findOne({
-        where: {
-          id: data.menus[i].parentId
-        },
-      })
-      menus.push(menu);
+  let menus = [];
+  for (let i = 0; i < data.menus.length; i++) {
+    if (data.menus[i].isMenu === 1) { // 如果是菜单
+      menus.push(data.menus[i]);
+      const hasParentMenu = menus.find(elchild => {
+        return elchild.id === data.menus[i].parentId;
+      });
+      if (!hasParentMenu && (data.menus[i].parentId !== 0)) {
+        let menu = await Menus.findOne({
+          where: {
+            id: data.menus[i].parentId
+          },
+        })
+        menus.push(menu); // 将没有的父级菜单添加进来
+      }
     }
   }
   const menuTree = getDFSTree(menus, 0);

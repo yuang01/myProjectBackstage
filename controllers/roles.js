@@ -64,11 +64,28 @@ const update = async (ctx) => {
       }
     }
   })
+
+  let updateMenus = [...menus];
+  for (let i = 0; i < menus.length; i++) {
+    const hasParentMenu = updateMenus.find(elchild => {
+      return elchild.id === menus[i].parentId;
+    });
+    if (!hasParentMenu && (menus[i].parentId !== 0)) {
+      let menu = await Menus.findOne({
+        where: {
+          id: menus[i].parentId
+        },
+      })
+      updateMenus.push(menu); // 将没有的父级菜单添加进来
+    }
+  }
+  
   // 更新该角色所对应的菜单
-  role.setMenus(menus);
+  role.setMenus(updateMenus);
 
   ctx.body = {
     code: 200,
+    data: updateMenus,
     message: '更新成功'
   }
 };

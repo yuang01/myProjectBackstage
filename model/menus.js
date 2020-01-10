@@ -21,6 +21,9 @@ const menus = sequelize.define('menus', {
   desc: {
     type: Sequelize.STRING,
   },
+  isMenu: { // 是否是菜单，用于区分按钮权限，按钮权限也是用这个表
+    type: Sequelize.INTEGER(1),
+  },
   title: {
     type: Sequelize.STRING,
   },
