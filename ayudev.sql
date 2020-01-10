@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50727
 File Encoding         : 65001
 
-Date: 2020-01-07 13:50:12
+Date: 2020-01-10 11:56:24
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -57,20 +57,26 @@ CREATE TABLE `menus` (
   `title` varchar(255) DEFAULT NULL,
   `icon` varchar(255) DEFAULT NULL,
   `component` varchar(255) DEFAULT NULL,
+  `isMenu` int(1) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=14 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of menus
 -- ----------------------------
-INSERT INTO `menus` VALUES ('1', '0', 'Excel', '/excel', null, null, null, '表格excel', 'excel', 'Layout');
-INSERT INTO `menus` VALUES ('2', '1', 'ExportExcel', 'export-excel', null, null, null, 'Export Excel', null, 'exportExcel');
-INSERT INTO `menus` VALUES ('3', '1', 'SelectExcel', 'export-selected-excel', null, null, null, 'Export Selected', null, 'selectExcel');
-INSERT INTO `menus` VALUES ('4', '0', 'setting', '/setting', null, null, null, '用户设置', 'user', 'Layout');
-INSERT INTO `menus` VALUES ('5', '4', 'personalSetting', 'page', null, null, null, '个人设置', null, 'personalSetting');
-INSERT INTO `menus` VALUES ('6', '4', 'setUsers', 'setUsers', null, null, null, '用户管理', null, 'setUsers');
-INSERT INTO `menus` VALUES ('7', '4', 'rolesManage', 'rolesManage', null, null, null, '角色管理', null, 'rolesManage');
-INSERT INTO `menus` VALUES ('8', '4', 'departmentManage', 'departmentManage', null, null, null, '部门管理', null, 'departmentManage');
+INSERT INTO `menus` VALUES ('1', '0', 'Excel', '/excel', null, null, null, '表格excel', 'excel', 'Layout', '1');
+INSERT INTO `menus` VALUES ('2', '1', 'ExportExcel', 'export-excel', null, null, null, 'Export Excel', null, 'exportExcel', '1');
+INSERT INTO `menus` VALUES ('3', '1', 'SelectExcel', 'export-selected-excel', null, null, null, 'Export Selected', null, 'selectExcel', '1');
+INSERT INTO `menus` VALUES ('4', '0', 'setting', '/setting', null, null, null, '系统设置', 'user', 'Layout', '1');
+INSERT INTO `menus` VALUES ('5', '4', 'personalSetting', 'page', null, null, null, '个人设置', null, 'personalSetting', '1');
+INSERT INTO `menus` VALUES ('6', '4', 'setUsers', 'setUsers', null, null, null, '用户管理', null, 'setUsers', '1');
+INSERT INTO `menus` VALUES ('7', '4', 'rolesManage', 'rolesManage', null, null, null, '角色管理', null, 'rolesManage', '1');
+INSERT INTO `menus` VALUES ('8', '4', 'departmentManage', 'departmentManage', null, null, null, '部门管理', null, 'departmentManage', '1');
+INSERT INTO `menus` VALUES ('9', '4', 'menusManage', 'menusManage', null, null, null, '菜单管理', null, 'menusManage', '1');
+INSERT INTO `menus` VALUES ('10', '4', null, 'test', null, null, null, '测试', null, 'test', '1');
+INSERT INTO `menus` VALUES ('11', '6', 'userManage/add', 'oparation', null, null, null, '新增用户', null, null, '0');
+INSERT INTO `menus` VALUES ('12', '6', 'userManage/edit', 'oparation', null, null, null, '编辑用户', null, null, '0');
+INSERT INTO `menus` VALUES ('13', null, 'userManage/delete', 'oparation', null, null, null, '删除用户', null, null, '0');
 
 -- ----------------------------
 -- Table structure for roleMenu
@@ -85,28 +91,22 @@ CREATE TABLE `roleMenu` (
   PRIMARY KEY (`id`),
   UNIQUE KEY `roleMenu_menuId_roleId_unique` (`roleId`,`menuId`),
   KEY `menuId` (`menuId`),
-  CONSTRAINT `roleMenu_ibfk_277` FOREIGN KEY (`roleId`) REFERENCES `roles` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  CONSTRAINT `roleMenu_ibfk_278` FOREIGN KEY (`menuId`) REFERENCES `menus` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=93 DEFAULT CHARSET=utf8;
+  CONSTRAINT `roleMenu_ibfk_365` FOREIGN KEY (`roleId`) REFERENCES `roles` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `roleMenu_ibfk_366` FOREIGN KEY (`menuId`) REFERENCES `menus` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB AUTO_INCREMENT=135 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of roleMenu
 -- ----------------------------
 INSERT INTO `roleMenu` VALUES ('14', '2019-12-26 07:49:51', '2019-12-26 07:49:51', '1', '5');
-INSERT INTO `roleMenu` VALUES ('15', '2019-12-26 07:49:51', '2019-12-26 07:49:51', '1', '6');
 INSERT INTO `roleMenu` VALUES ('16', '2019-12-26 07:49:51', '2019-12-26 07:49:51', '1', '7');
-INSERT INTO `roleMenu` VALUES ('32', '2019-12-26 09:33:47', '2019-12-26 09:33:47', '1', '2');
-INSERT INTO `roleMenu` VALUES ('36', '2019-12-27 03:36:03', '2019-12-27 03:36:03', '1', '1');
 INSERT INTO `roleMenu` VALUES ('37', '2019-12-27 03:36:03', '2019-12-27 03:36:03', '1', '3');
 INSERT INTO `roleMenu` VALUES ('44', '2019-12-27 03:49:56', '2019-12-27 03:49:56', '3', '5');
-INSERT INTO `roleMenu` VALUES ('49', '2019-12-27 03:54:10', '2019-12-27 03:54:10', '3', '2');
 INSERT INTO `roleMenu` VALUES ('50', '2019-12-27 06:21:21', '2019-12-27 06:21:21', '2', '3');
-INSERT INTO `roleMenu` VALUES ('51', '2019-12-27 06:21:21', '2019-12-27 06:21:21', '2', '5');
 INSERT INTO `roleMenu` VALUES ('52', '2020-01-02 07:49:57', '2020-01-02 07:49:57', '16', '1');
 INSERT INTO `roleMenu` VALUES ('53', '2020-01-02 07:49:57', '2020-01-02 07:49:57', '16', '2');
 INSERT INTO `roleMenu` VALUES ('54', '2020-01-02 07:49:57', '2020-01-02 07:49:57', '16', '3');
 INSERT INTO `roleMenu` VALUES ('55', '2020-01-02 08:26:13', '2020-01-02 08:26:13', '16', '5');
-INSERT INTO `roleMenu` VALUES ('56', '2020-01-02 08:27:34', '2020-01-02 08:27:34', '1', '4');
 INSERT INTO `roleMenu` VALUES ('57', '2020-01-02 08:27:34', '2020-01-02 08:27:34', '1', '8');
 INSERT INTO `roleMenu` VALUES ('58', '2020-01-03 07:49:26', '2020-01-03 07:49:26', '17', '1');
 INSERT INTO `roleMenu` VALUES ('59', '2020-01-03 07:49:26', '2020-01-03 07:49:26', '17', '2');
@@ -119,12 +119,6 @@ INSERT INTO `roleMenu` VALUES ('65', '2020-01-03 07:50:26', '2020-01-03 07:50:26
 INSERT INTO `roleMenu` VALUES ('66', '2020-01-03 07:51:24', '2020-01-03 07:51:24', '19', '1');
 INSERT INTO `roleMenu` VALUES ('67', '2020-01-03 07:51:24', '2020-01-03 07:51:24', '19', '2');
 INSERT INTO `roleMenu` VALUES ('68', '2020-01-03 07:51:24', '2020-01-03 07:51:24', '19', '3');
-INSERT INTO `roleMenu` VALUES ('69', '2020-01-03 07:56:49', '2020-01-03 07:56:49', '6', '1');
-INSERT INTO `roleMenu` VALUES ('70', '2020-01-03 07:56:49', '2020-01-03 07:56:49', '6', '2');
-INSERT INTO `roleMenu` VALUES ('71', '2020-01-03 07:56:49', '2020-01-03 07:56:49', '6', '3');
-INSERT INTO `roleMenu` VALUES ('72', '2020-01-03 07:56:49', '2020-01-03 07:56:49', '6', '4');
-INSERT INTO `roleMenu` VALUES ('73', '2020-01-03 07:56:49', '2020-01-03 07:56:49', '6', '5');
-INSERT INTO `roleMenu` VALUES ('74', '2020-01-03 07:56:49', '2020-01-03 07:56:49', '6', '6');
 INSERT INTO `roleMenu` VALUES ('75', '2020-01-03 07:56:49', '2020-01-03 07:56:49', '6', '7');
 INSERT INTO `roleMenu` VALUES ('76', '2020-01-03 07:56:49', '2020-01-03 07:56:49', '6', '8');
 INSERT INTO `roleMenu` VALUES ('77', '2020-01-03 07:56:56', '2020-01-03 07:56:56', '7', '1');
@@ -143,6 +137,18 @@ INSERT INTO `roleMenu` VALUES ('89', '2020-01-03 07:57:08', '2020-01-03 07:57:08
 INSERT INTO `roleMenu` VALUES ('90', '2020-01-03 07:57:08', '2020-01-03 07:57:08', '9', '6');
 INSERT INTO `roleMenu` VALUES ('91', '2020-01-03 07:57:08', '2020-01-03 07:57:08', '9', '7');
 INSERT INTO `roleMenu` VALUES ('92', '2020-01-03 07:57:08', '2020-01-03 07:57:08', '9', '8');
+INSERT INTO `roleMenu` VALUES ('95', '2020-01-07 08:40:13', '2020-01-07 08:40:13', '1', '1');
+INSERT INTO `roleMenu` VALUES ('96', '2020-01-07 08:40:13', '2020-01-07 08:40:13', '1', '2');
+INSERT INTO `roleMenu` VALUES ('98', '2020-01-07 08:47:28', '2020-01-07 08:47:28', '1', '9');
+INSERT INTO `roleMenu` VALUES ('99', '2020-01-07 09:41:46', '2020-01-07 09:41:46', '1', '10');
+INSERT INTO `roleMenu` VALUES ('102', '2020-01-09 08:11:25', '2020-01-09 08:11:25', '3', '3');
+INSERT INTO `roleMenu` VALUES ('125', '2020-01-10 01:24:38', '2020-01-10 01:24:38', '1', '4');
+INSERT INTO `roleMenu` VALUES ('127', '2020-01-10 01:37:03', '2020-01-10 01:37:03', '1', '11');
+INSERT INTO `roleMenu` VALUES ('128', '2020-01-10 01:37:03', '2020-01-10 01:37:03', '1', '6');
+INSERT INTO `roleMenu` VALUES ('129', '2020-01-10 03:33:56', '2020-01-10 03:33:56', '1', '12');
+INSERT INTO `roleMenu` VALUES ('132', '2020-01-10 03:37:25', '2020-01-10 03:37:25', '6', '4');
+INSERT INTO `roleMenu` VALUES ('133', '2020-01-10 03:42:55', '2020-01-10 03:42:55', '6', '11');
+INSERT INTO `roleMenu` VALUES ('134', '2020-01-10 03:42:55', '2020-01-10 03:42:55', '6', '6');
 
 -- ----------------------------
 -- Table structure for roles
@@ -166,11 +172,11 @@ CREATE TABLE `roles` (
 -- ----------------------------
 -- Records of roles
 -- ----------------------------
-INSERT INTO `roles` VALUES ('1', null, 'admin', '管理员', '2019-12-24 17:56:00', '2020-01-02 08:27:34', '1');
-INSERT INTO `roles` VALUES ('2', null, 'developer', '开发者', '2019-12-25 10:18:00', '2019-12-27 06:21:21', '2');
-INSERT INTO `roles` VALUES ('3', null, 'other', '游客', '2019-12-25 10:18:07', '2020-01-03 07:56:37', '6');
+INSERT INTO `roles` VALUES ('1', null, 'admin', '管理员', '2019-12-24 17:56:00', '2020-01-10 03:33:56', '1');
+INSERT INTO `roles` VALUES ('2', null, 'developer', '开发者', '2019-12-25 10:18:00', '2020-01-09 08:11:19', '2');
+INSERT INTO `roles` VALUES ('3', null, 'other', '游客', '2019-12-25 10:18:07', '2020-01-09 08:11:25', '6');
 INSERT INTO `roles` VALUES ('4', null, 'aa', '我', '2019-12-25 08:35:08', '2019-12-25 08:35:08', null);
-INSERT INTO `roles` VALUES ('6', null, 'bb', '测试', '2019-12-25 08:36:51', '2020-01-03 07:56:48', '1');
+INSERT INTO `roles` VALUES ('6', null, 'bb', '测试', '2019-12-25 08:36:51', '2020-01-10 03:42:55', '1');
 INSERT INTO `roles` VALUES ('7', null, 'cc', '哈哈', '2019-12-25 08:38:52', '2020-01-03 07:56:56', '4');
 INSERT INTO `roles` VALUES ('9', null, 'dd', 'dedede', '2020-01-02 07:16:16', '2020-01-03 07:57:08', '7');
 INSERT INTO `roles` VALUES ('10', null, 'ee', 'ererer', '2020-01-02 07:20:17', '2020-01-02 07:20:17', null);
@@ -195,19 +201,20 @@ CREATE TABLE `roleUser` (
   PRIMARY KEY (`id`),
   UNIQUE KEY `roleUser_userId_roleId_unique` (`roleId`,`userId`),
   KEY `userId` (`userId`),
-  CONSTRAINT `roleUser_ibfk_381` FOREIGN KEY (`roleId`) REFERENCES `roles` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  CONSTRAINT `roleUser_ibfk_382` FOREIGN KEY (`userId`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8;
+  CONSTRAINT `roleUser_ibfk_469` FOREIGN KEY (`roleId`) REFERENCES `roles` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `roleUser_ibfk_470` FOREIGN KEY (`userId`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of roleUser
 -- ----------------------------
 INSERT INTO `roleUser` VALUES ('1', '2019-12-24 15:54:26', '2019-12-24 15:54:28', '1', '1');
 INSERT INTO `roleUser` VALUES ('2', '2019-12-24 08:04:58', '2019-12-24 08:04:58', '3', '2');
-INSERT INTO `roleUser` VALUES ('3', '2019-12-25 09:11:02', '2019-12-25 09:11:02', '3', '3');
 INSERT INTO `roleUser` VALUES ('4', '2020-01-07 01:44:54', '2020-01-07 01:44:54', '3', '4');
-INSERT INTO `roleUser` VALUES ('5', '2020-01-07 01:45:41', '2020-01-07 01:45:41', '3', '5');
 INSERT INTO `roleUser` VALUES ('8', '2020-01-07 03:14:59', '2020-01-07 03:14:59', '6', '6');
+INSERT INTO `roleUser` VALUES ('9', '2020-01-09 06:47:27', '2020-01-09 06:47:27', '2', '5');
+INSERT INTO `roleUser` VALUES ('10', '2020-01-09 07:08:17', '2020-01-09 07:08:17', '6', '5');
+INSERT INTO `roleUser` VALUES ('11', '2020-01-09 08:39:16', '2020-01-09 08:39:16', '2', '3');
 
 -- ----------------------------
 -- Table structure for tag
@@ -250,7 +257,7 @@ CREATE TABLE `users` (
 -- ----------------------------
 INSERT INTO `users` VALUES ('1', 'ayu', '123456', 'http://localhost:3000/upload/0.7797981766361568.jpg', '0', '有钱任性买辣条', null, '2019-12-30 01:53:29');
 INSERT INTO `users` VALUES ('2', '爱吃辣条的小欣', '123456', 'http://localhost:3000/upload/0.49852474395151103.png', '1', '23333333', '2019-12-24 08:04:00', '2020-01-02 07:00:13');
-INSERT INTO `users` VALUES ('3', 'youke', '123', 'http://localhost:3000/upload/0.3121317647405968.jpeg', '0', '我是游客', '2019-12-25 09:11:02', '2019-12-30 06:51:29');
+INSERT INTO `users` VALUES ('3', 'youke', '123', 'http://localhost:3000/upload/0.3121317647405968.jpeg', '0', '我是游客', '2019-12-25 09:11:02', '2020-01-09 08:39:16');
 INSERT INTO `users` VALUES ('4', 'qwe', 'qwe', 'https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1576503673945&di=4427f71ea7562f888f52c5614fad9f27&imgtype=0&src=http%3A%2F%2Fimg.qqzhi.com%2Fuploads%2F2019-01-16%2F145116704.jpg', '0', 'qweqe', '2020-01-07 01:44:54', '2020-01-07 01:44:54');
-INSERT INTO `users` VALUES ('5', 'www', '123', 'http://localhost:3000/upload/0.16612990512342507.png', '1', 'asdfdfdf', '2020-01-07 01:45:41', '2020-01-07 01:45:41');
+INSERT INTO `users` VALUES ('5', 'www', '123', 'http://localhost:3000/upload/0.16612990512342507.png', '1', 'asdfdfdf', '2020-01-07 01:45:41', '2020-01-09 07:08:17');
 INSERT INTO `users` VALUES ('6', 'qqq', '123', 'https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1576503673945&di=4427f71ea7562f888f52c5614fad9f27&imgtype=0&src=http%3A%2F%2Fimg.qqzhi.com%2Fuploads%2F2019-01-16%2F145116704.jpg', '0', '2132131', '2020-01-07 02:48:39', '2020-01-07 03:15:24');

@@ -1,5 +1,6 @@
 const Users = require('../model/users')
 const Roles = require('../model/roles');
+const Menus = require('../model/menus')
 const jwt = require('jsonwebtoken'); // 用于签发、解析`token`
 const Op = require('sequelize').Op;
 const all = async (ctx) => {
@@ -90,8 +91,27 @@ const userInfo = async (ctx) => {
     });
     data.roles = roles;
     data.password = password;
+
+    const roleMenus = await Roles.findOne({ 
+      include: [{
+        model: Menus,
+        where: {
+          isMenu: 0,
+        },
+        through: { attributes: [] }, // 排除中间表  
+      }],
+      where: { 
+        name: {
+          [Op.or]: roles
+        },
+      } 
+    })
+    let permissions = [];
+    roleMenus && (permissions = roleMenus.menus.map(el => el.name));
+
     ctx.body = {
       data: data,
+      permissions,
       code: 200,
       message: 'success'
     }
