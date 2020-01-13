@@ -27,6 +27,12 @@ const menus = sequelize.define('menus', {
   title: {
     type: Sequelize.STRING,
   },
+  hidden: {
+    type: Sequelize.INTEGER(1)
+  },
+  index: {
+    type: Sequelize.INTEGER(11)
+  },
   icon: {
     type: Sequelize.STRING,
   },

@@ -2,8 +2,9 @@ const Menus = require('../model/menus')
 const Roles = require('../model/roles')
 const Op = require('sequelize').Op
 
-function treeNode(id, parentId, desc, createdAt, name, path, title, icon, component, isMenu, children) {
+function treeNode(id, index, parentId, desc, createdAt, name, path, title, icon, component, isMenu, hidden, children) {
   this.id = id;
+  this.index = index;
   this.parentId = parentId;
   this.desc = desc;
   this.createdAt = createdAt;
@@ -16,15 +17,17 @@ function treeNode(id, parentId, desc, createdAt, name, path, title, icon, compon
   };
   this.component = component;
   this.isMenu = isMenu;
+  this.hidden = hidden;
   this.children = children;
 }
 
-function getDFSTree(menus, parentId) {
+function getDFSTree(menus, parentId) { 
   let treelist = []
   menus.forEach(el => {
     if (el.parentId === parentId) {
       const tree = new treeNode(
         el.id,
+        el.index,
         el.parentId,
         el.desc,
         el.createdAt,
@@ -34,6 +37,7 @@ function getDFSTree(menus, parentId) {
         el.icon,
         el.component,
         el.isMenu,
+        el.hidden,
         getDFSTree(menus, el.id)
       )
       treelist.push(tree);
@@ -41,12 +45,23 @@ function getDFSTree(menus, parentId) {
   });
   return treelist;
 }
+// 树形结构排序函数
+function _sort(data) {
+  for(let i = 0; i < data.length; i++) {
+    _sort(data[i].children)
+  }
+  data.sort(function(a,b) {
+    return a.index - b.index
+  })
+  return data;
+}
+
 
 const getMenus = async (ctx) => {
   let menus = await Menus.findAll();
   
-  const menuTree = getDFSTree(menus, 0); // 将菜单表拼装成一个树形结构，因为有的菜单有子菜单
-
+  let menuTree = getDFSTree(menus, 0); // 将菜单表拼装成一个树形结构，因为有的菜单有子菜单
+  menuTree = _sort(menuTree);
   ctx.body = {
     code: 200,
     data: menuTree
@@ -150,7 +165,8 @@ const getMenusByRoleName = async (ctx) => {
       menus.push(menu); // 将没有的父级菜单添加进来
     }
   }
-  const menuTree = getDFSTree(menus, 0);
+  let menuTree = getDFSTree(menus, 0);
+  menuTree = _sort(menuTree);
 
   ctx.body = {
     code: 200,
