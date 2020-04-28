@@ -174,8 +174,27 @@ const getMenusByRoleName = async (ctx) => {
   }
 }
 
+const addMenu = async (ctx) => {
+  const data = ctx.request.body
+  try {
+    let newMenu = await Menus.create(data);
+    ctx.body = {
+      code: 200,
+      message: '菜单创建成功',
+    }
+  }
+  catch(err) {
+    const msg = err.errors[0]
+    ctx.body = {
+      code: 300,
+      message: msg.value + msg.message
+    }
+  }
+}
+
 module.exports = {
   getMenus,
   getMenusByRoleId,
-  getMenusByRoleName
+  getMenusByRoleName,
+  addMenu
 }
