@@ -192,9 +192,58 @@ const addMenu = async (ctx) => {
   }
 }
 
+const getMenuById = async (ctx) => {
+  let id = Number(ctx.request.query.id);
+  try {
+    let menu = await Menus.findOne({
+      where: {
+        id,
+      }
+    });
+    ctx.body = {
+      code: 200,
+      data: menu
+    }
+  }
+  catch(err) {
+    const msg = err.errors[0]
+    ctx.body = {
+      code: 300,
+      message: msg.value + msg.message
+    }
+  }
+}
+
+const updateMenu = async (ctx) => {
+  const params = ctx.request.body;
+  const where = {
+    id: params.id
+  }
+  await Menus.update(params, { where });
+  ctx.body = {
+    code: 200,
+    message: '更新成功'
+  }
+};
+
+// 删除
+const deleteMenu = async ctx => {
+  const where = {
+    id: ctx.request.query.id
+  };
+  await Menus.destroy({where})
+  ctx.body = {
+    code: 200,
+    message: '删除成功'
+  }
+};
+
 module.exports = {
   getMenus,
   getMenusByRoleId,
   getMenusByRoleName,
-  addMenu
+  addMenu,
+  getMenuById,
+  updateMenu,
+  deleteMenu
 }
