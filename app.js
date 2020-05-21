@@ -9,6 +9,7 @@ const logger = require('koa-logger')
 const jwt = require('jsonwebtoken'); // 用于签发、解析`token`
 const jwtKoa = require('koa-jwt');      // 用于路由权限控制
 const cors = require('koa2-cors')
+const checkToken = require('./middleware/checkToken.js')
 
 const modelIndex = require('./model/index')
 const index = require('./routes/index')
@@ -19,6 +20,10 @@ const roleUser = require('./model/roleUser')
 const department = require('./routes/department')
 const menus = require('./routes/menus')
 const article = require('./routes/article')
+const kanban = require('./routes/kanban')
+
+
+
 
 // error handler
 onerror(app)
@@ -78,6 +83,8 @@ app.use(cors({
   allowHeaders: ['Content-Type', 'Authorization', 'Accept', 'x-token'],
 }))
 
+// 验证token的中间件函数
+app.use(checkToken)
 // routes
 app.use(index.routes(), index.allowedMethods())
 app.use(users.routes(), users.allowedMethods())
@@ -87,9 +94,13 @@ app.use(department.routes(), department.allowedMethods())
 app.use(menus.routes(), menus.allowedMethods())
 app.use(article.routes(), article.allowedMethods())
 
+
+
 // error-handling
 app.on('error', (err, ctx) => {
   console.error('server error', err, ctx)
 });
+
+
 
 module.exports = app
